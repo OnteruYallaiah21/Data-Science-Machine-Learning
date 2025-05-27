@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Resume Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .flex-row {
+            display: flex;
+            gap: 20px;
+        }
+        .input-box {
+            flex: 1;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: auto;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .output-container {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #2196F3;
+            padding: 5px 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background-color: #0b7dda;
+        }
+        /* Styles for the link boxes */
+        .link-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .link-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .link-copy-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .link-copy-btn:hover {
+            background-color: #45a049;
+        }
+        .link-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .success-message {
+            color: #4CAF50;
+            font-size: 14px;
+            margin-left: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ATS Resume Analyzer</h1>
+        
+        <!-- Added LinkedIn and Portfolio links section -->
+        <div class="flex-row">
+            <div class="input-box">
+                <span class="link-label">LinkedIn Profile:</span>
+                <div class="link-box">
+                    <input type="text" class="link-input" id="linkedin-link" value="https://www.linkedin.com/in/yallaiah-onteru-907890259/" readonly>
+                    <button class="link-copy-btn" onclick="copyLinkToClipboard('linkedin-link')">Copy</button>
+                    <span class="success-message" id="linkedin-success">Copied!</span>
+                </div>
+            </div>
+            
+            <div class="input-box">
+                <span class="link-label">Portfolio Website:</span>
+                <div class="link-box">
+                    <input type="text" class="link-input" id="portfolio-link" value="https://onteruyallaiah21.github.io/portfolio.yallaiah.ai/" readonly>
+                    <button class="link-copy-btn" onclick="copyLinkToClipboard('portfolio-link')">Copy</button>
+                    <span class="success-message" id="portfolio-success">Copied!</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex-row">
+            <div class="input-box">
+                <label for="jobDescription">Job Description:</label>
+                <textarea id="jobDescription" placeholder="Paste the job description here..."></textarea>
+            </div>
+            
+            <div class="input-box">
+                <label for="resume">Resume:</label>
+                <textarea id="resume" placeholder="Paste your resume here..."></textarea>
+            </div>
+        </div>
+        
+        <button onclick="generateOutput()">Final Prompt</button>
+        
+        <div>
+            <label for="output">Output:</label>
+            <div class="output-container">
+                <textarea id="output" readonly style="height: 150px;"></textarea>
+                <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const constantText = `
+            Input format:
+            job_description={...}
+            resume={...}
+            
+           Extract exact skill phrases from the job description. Return only:
+
+			1. Technical skills (tools, technologies, cloud platforms, languages, frameworks)
+			2. Non-technical skills (soft skills, behaviors, traits)
+
+			Then, compare these skills with the resume. For any skills missing from the resume:
+
+			* Generate one realistic, ATS-optimized bullet point per missing skill
+			* If a missing skill aligns with an existing bullet point, enhance it with a hybrid version
+			* Otherwise, insert a new bullet point under the most relevant job/project
+			* Use cloud-specific context (e.g., AWS tools in AWS projects) and domain-specific context (e.g., healthcare, payments, MDM) when applicable
+			* Use keywords from the job description exactly
+			* Do not delete or modify job titles, company names, dates, or environments. Only enhance or append bullet points
+			* If the job description includes unrelated skills like React, Java, .NET for a Data Engineer role, add one bullet point stating familiarity with those skills in a cross-functional context
+            * JUST MISS ONE OR TWO SKILLS ONLY, IF JD IS ENTIRELY DEFFERENT WITH MY RESUME MEANS 
+			Return only the missing skills and the enhanced or added bullet points organized by job/project role
+
+			Professional summary section should contain 12 to 15 bullet points. Replace or enhance bullets to include missing skills. Each bullet should be 30 to 40 words (200 to 300 characters), realistic, and aligned with JD/resume.
+
+			Project 1 (most recent) should include 10 to 15 bullet points. Add or modify bullet points using missing skills from the JD. Use Azure, Databricks, Unity Catalog, CI/CD, Kafka, and relevant healthcare context if mentioned in the JD.
+
+			Project 2 should include 6 to 10 bullet points. Focus on AWS, Glue, Redshift, data lakes, governance, streaming, financial or master data management if present in JD.
+
+			Project 3 should include 5 to 6 bullet points. Focus on Azure + Hadoop hybrid setup, Hive, Synapse, ADF, and pharma/healthcare compliance if applicable.
+
+			Enhance the technical skills section by adding only missing skills using the following format:
+            use below format only do not mention other headers
+			• Cloud Platforms: list comma-separated values
+			• Cloud Services: list all comma-separated values from the aws and azure
+			• Databases: list comma-separated values
+			• Programming Languages: list comma-separated values
+			• DevOps & Automation: list comma-separated values
+			• Big Data & Distributed Systems: list comma-separated values
+			• Data Visualization & BI: list comma-separated values
+			• ML & Data Science: list comma-separated values
+            • other: list comma-separated values
+			All outputs must be in plain text. Use only exact keywords from the job description. Each bullet point must be 30 to 40 words long and 200 to 300 characters. Enhance existing bullet points wherever possible. Add new ones only if required. Maintain realistic content aligned with resume and JD.
+
+
+			For irrelevant skills (e.g., React, .NET, DuckDB, ClickHouse, Iceberg in a Data Engineer role), just add:
+
+			“Familiar with frontend technologies like React, .NET, and Java as mentioned in cross-functional project contexts.”
+
+            ********keep in mind strictly i need below format *****************
+			
+			{
+                      "name": "Full Name",
+                      "title": "Professional Title",
+                      "portfolio": "https://onteruyallaiah21.github.io/portfolio.yallaiah.ai/",
+                      "email": "you@example.com",
+                      "phone": "+1-123-456-7890",
+                      "linkedin": "https://www.linkedin.com/in/yallaiah-onteru-907890259",
+                      "professional_summary": [
+                        "Short summary line 1",
+                        "Short summary line 2",
+                        "Short summary line 3"
+                      ],
+                      "technical_skills": {
+                        "Cloud Platforms": ["Azure", "AWS", "GCP"],
+                        "Databases": ["PostgreSQL", "Oracle", "Cassandra"],
+                        "Programming": ["Python", "Java", "SQL"]
+                      },
+                      "experience": [
+                        {
+                          "role": "Job Title",
+                          "company": "Company Name",
+                          "duration": "Start Date - End Date or Present",
+                          "responsibilities": [
+                            "Responsibility line 1",
+                            "Responsibility line 2",
+                            "Responsibility line 3"
+                          ],
+                          "environment": ["Tech1", "Tech2", "Tech3"]
+                        }
+                      ],
+                      "education": {
+                        "degree": "Degree Title",
+                        "institution": "University Name"
+                      },
+                      "certifications": [
+                        "Certification 1",
+                        "Certification 2"
+                      ]
+            }
+
+
+
+`;
+
+        function generateOutput() {
+            let jobDesc = document.getElementById('jobDescription').value.trim();
+            let resume = document.getElementById('resume').value.trim();
+            
+            if (!jobDesc || !resume) {
+                alert("Please enter both job description and resume text");
+                return;
+            }
+            
+            jobDesc = jobDesc.replace(/"/g, '\\"');
+            resume = resume.replace(/"/g, '\\"');
+            
+            const output = `job_discription={"${jobDesc}"}\n\nresume={"${resume}"}\n\n${constantText}`;
+            document.getElementById('output').value = output;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output');
+            outputText.select();
+            document.execCommand('copy');
+
+            const copyBtn = document.querySelector('.output-container .copy-btn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        }
+        
+        function copyLinkToClipboard(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            
+            document.execCommand("copy");
+            
+            // Show success message
+            const successElement = document.getElementById(elementId + "-success");
+            successElement.style.display = "inline";
+            
+            // Hide success message after 2 seconds
+            setTimeout(() => {
+                successElement.style.display = "none";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

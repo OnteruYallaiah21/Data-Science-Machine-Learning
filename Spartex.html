@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spartex AI - Intelligent Agentic AI Solutions</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    
+    <!-- Splide.js for carousels -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    
+    <!-- Lenis for smooth scrolling -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    
+    <style>
+        /* Global Variables */
+        :root {
+            --primary-color: #000000;  /* Full black as requested */
+            --secondary-color: #4f46e5; /* Vibrant purple accent */
+            --accent-color: #10b981;   /* Emerald green */
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --light-color: #f8fafc;
+            --dark-color: #0f172a;
+            --card-bg: #ffffff;
+            --section-bg: #ffffff;
+            --footer-bg: #000000;
+            --footer-text: #e2e8f0;
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --primary-color: #ffffff;
+            --secondary-color: #818cf8;
+            --text-color: #e2e8f0;
+            --text-light: #94a3b8;
+            --light-color: #0f172a;
+            --dark-color: #f8fafc;
+            --card-bg: #1e293b;
+            --section-bg: #0f172a;
+            --footer-bg: #000000;
+            --footer-text: #e2e8f0;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--section-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 25px 0;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        header.scrolled {
+            background-color: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+
+        [data-theme="dark"] header.scrolled {
+            background-color: rgba(0, 0, 0, 0.95);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            letter-spacing: -1px;
+        }
+
+        .logo-text span {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 40px;
+            position: relative;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--card-bg);
+            min-width: 250px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 15px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 100;
+            transform: translateY(10px);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(20px);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 25px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--secondary-color);
+            padding-left: 30px;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            z-index: 1001;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(240, 249, 255, 0.9) 100%);
+        }
+
+        [data-theme="dark"] .hero {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(9, 14, 28, 0.9) 100%);
+        }
+
+        .hero-content {
+            width: 50%;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            max-height: 80%;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+        }
+
+        .hero-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(60px);
+        }
+
+        .shape-1 {
+            width: 800px;
+            height: 800px;
+            background: var(--secondary-color);
+            top: -400px;
+            right: -400px;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent-color);
+            bottom: -300px;
+            left: -300px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary-color);
+            top: 50%;
+            left: 30%;
+            animation: float 10s ease-in-out infinite 2s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, 20px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Particle Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        /* Services Section */
+        .services {
+            background-color: var(--section-bg);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .service-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .service-description {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        /* Success Stories Section */
+        .success-stories {
+            background-color: var(--light-color);
+        }
+
+        [data-theme="dark"] .success-stories {
+            background-color: var(--dark-color);
+        }
+
+        .splide__arrow {
+            background: var(--card-bg);
+            width: 50px;
+            height: 50px;
+            opacity: 1;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .splide__arrow svg {
+            fill: var(--secondary-color);
+        }
+
+        .splide__pagination__page {
+            background: var(--text-light);
+            width: 10px;
+            height: 10px;
+        }
+
+        .splide__pagination__page.is-active {
+            background: var(--secondary-color);
+            transform: scale(1.2);
+        }
+
+        .story-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            margin: 0 15px;
+            height: auto;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .story-logo {
+            height: 60px;
+            margin-bottom: 25px;
+            object-fit: contain;
+            filter: grayscale(100%) contrast(0.5);
+            transition: all 0.5s ease;
+        }
+
+        .story-card:hover .story-logo {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        .story-text {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .story-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .project-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            color: white;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 6px 18px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project-description {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        /* Resume Analyzer Project - Featured */
+        .featured-project {
+            grid-column: span 2;
+            height: 500px;
+        }
+
+        .featured-project .project-overlay {
+            padding: 50px;
+        }
+
+        .featured-project .project-title {
+            font-size: 2rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            background-color: var(--light-color);
+        }
+
+        [data-theme="dark"] .testimonials {
+            background-color: var(--dark-color);
+        }
+
+        .testimonial-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            margin: 0 15px;
+            height: auto;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .testimonial-quote {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            position: relative;
+            line-height: 1.8;
+        }
+
+        .testimonial-quote:before {
+            content: '"';
+            font-size: 5rem;
+            position: absolute;
+            top: -30px;
+            left: -20px;
+            color: var(--secondary-color);
+            opacity: 0.1;
+            font-family: serif;
+            z-index: -1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 3px solid var(--secondary-color);
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .author-position {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Blog Section */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .blog-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 30px;
+        }
+
+        .blog-date {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-date i {
+            margin-right: 8px;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .blog-card:hover .blog-title {
+            color: var(--secondary-color);
+        }
+
+        .blog-excerpt {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .read-more {
+            color: var(--secondary-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .read-more i {
+            margin-left: 8px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .blog-card:hover .read-more {
+            color: var(--accent-color);
+        }
+
+        .blog-card:hover .read-more i {
+            margin-left: 12px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 100px 0 30px;
+            position: relative;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 70px;
+        }
+
+        .footer-logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            display: inline-block;
+            color: white;
+        }
+
+        .footer-logo span {
+            color: var(--secondary-color);
+        }
+
+        .footer-about {
+            margin-bottom: 25px;
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .footer-title {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            position: relative;
+            color: white;
+        }
+
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #94a3b8;
+        }
+
+        .footer-contact-item i {
+            margin-right: 15px;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            min-width: 20px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .theme-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none;
+            outline: none;
+        }
+
+        .theme-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Chatbot */
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 110px;
+            z-index: 1000;
+            width: 400px;
+            max-width: 90%;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .chatbot-container.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .chatbot-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .chatbot-title i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .chatbot-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .chatbot-body {
+            background-color: var(--card-bg);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            height: 500px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            animation: messageIn 0.3s ease-out;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bot-message {
+            background-color: rgba(79, 70, 229, 0.1);
+            border-radius: 18px 18px 18px 4px;
+            align-self: flex-start;
+            color: var(--text-color);
+        }
+
+        .user-message {
+            background-color: var(--secondary-color);
+            border-radius: 18px 18px 4px 18px;
+            align-self: flex-end;
+            color: white;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .chatbot-input button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input button:hover {
+            background-color: var(--accent-color);
+            transform: rotate(15deg);
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none;
+            outline: none;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 3.8rem;
+            }
+            
+            .featured-project {
+                grid-column: span 1;
+                height: auto;
+            }
+            
+            .featured-project .project-overlay {
+                padding: 30px;
+            }
+            
+            .featured-project .project-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-content {
+                width: 100%;
+                text-align: center;
+                padding-top: 100px;
+            }
+            
+            .hero-title {
+                font-size: 3.2rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                display: none;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 100px 40px 40px;
+                transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+                box-shadow: 10px 0 50px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                box-shadow: none;
+                padding: 0;
+                margin-top: 10px;
+                margin-left: 20px;
+                display: none;
+                transform: none;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display: block;
+                transform: none;
+            }
+            
+            .section {
+                padding: 80px 0;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .blog-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chatbot-container {
+                right: 30px;
+                width: calc(100% - 60px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .story-stats,
+            .hero-buttons {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .chatbot-container {
+                bottom: 80px;
+                right: 20px;
+                width: calc(100% - 40px);
+            }
+            
+            .chatbot-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .theme-switcher {
+                bottom: 20px;
+                right: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="https://via.placeholder.com/50x50" alt="Spartex AI Logo">
+                    <div class="logo-text">Spartex<span>AI</span></div>
+                </div>
+                
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#services">Services <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#ai-agents"><i class="fas fa-robot"></i> AI Agents</a>
+                            <a href="#rag"><i class="fas fa-database"></i> RAG Solutions</a>
+                            <a href="#chatbots"><i class="fas fa-comments"></i> Chatbots</a>
+                            <a href="#integration"><i class="fas fa-puzzle-piece"></i> AI Integration</a>
+                            <a href="#consulting"><i class="fas fa-chart-line"></i> AI Consulting</a>
+                        </div>
+                    </li>
+                    
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        
+        <div class="particles" id="particles"></div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Agentic AI Solutions for Modern Businesses</h1>
+                <p class="hero-subtitle">Spartex AI delivers cutting-edge autonomous agents, RAG systems, and intelligent chatbots that transform operations, enhance decision-making, and revolutionize customer experiences.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">Get Started</a>
+                    <a href="#services" class="btn btn-secondary">Explore Services</a>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <img src="https://via.placeholder.com/800x600" alt="AI Agent Illustration">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our AI Services</h2>
+            <p class="section-subtitle">We provide comprehensive AI solutions tailored to your business needs</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="service-title">Autonomous AI Agents</h3>
+                    <p class="service-description">Intelligent agents that handle complex workflows, make data-driven decisions, and interact with your systems 24/7 without human intervention.</p>
+                    <a href="#" class="read-more">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="service-title">RAG Architectures</h3>
+                    <p class="service-description">Retrieval-Augmented Generation systems that combine LLMs with your knowledge base for accurate, up-to-date responses with citations.</p>
+                    <a href="#" class="read-more">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="service-title">Conversational AI</h3>
+                    <p class="service-description">Next-generation chatbots that understand context, handle complex dialogues, and integrate with your backend systems.</p>
+                    <a href="#" class="read-more">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3 class="service-title">AI Integration</h3>
+                    <p class="service-description">Seamlessly connect AI capabilities with your existing CRM, ERP, and other enterprise systems.</p>
+                    <a href="#" class="read-more">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="service-title">AI Strategy</h3>
+                    <p class="service-description">Roadmap development and implementation planning to maximize ROI from your AI investments.</p>
+                    <a href="#" class="read-more">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="service-title">Custom AI Solutions</h3>
+                    <p class="service-description">Tailored AI systems designed specifically for your unique business requirements and challenges.</p>
+                    <a href="#" class="read-more">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section class="section success-stories" id="success">
+        <div class="container">
+            <h2 class="section-title">Success Stories</h2>
+            <p class="section-subtitle">How we've helped businesses achieve transformative results with AI</p>
+            
+            <div class="splide" id="success-stories-slider">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="story-card">
+                                <img src="https://via.placeholder.com/200x60" alt="Client Logo" class="story-logo">
+                                <p class="story-text">"Spartex AI's autonomous agents transformed our customer service operations. We now handle 3x the volume with 40% fewer staff while maintaining 98% satisfaction scores. The system pays for itself in efficiency gains alone."</p>
+                                <div class="story-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">300%</div>
+                                        <div class="stat-label">Capacity Increase</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">98%</div>
+                                        <div class="stat-label">Satisfaction</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">40%</div>
+                                        <div class="stat-label">Cost Reduction</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="story-card">
+                                <img src="https://via.placeholder.com/200x60" alt="Client Logo" class="story-logo">
+                                <p class="story-text">"The RAG system implemented by Spartex AI gave our legal team instant access to relevant case law with proper citations. Research time decreased by 75% while accuracy improved significantly."</p>
+                                <div class="story-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">75%</div>
+                                        <div class="stat-label">Faster Research</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">90%</div>
+                                        <div class="stat-label">Accuracy</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">60%</div>
+                                        <div class="stat-label">More Cases</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="story-card">
+                                <img src="https://via.placeholder.com/200x60" alt="Client Logo" class="story-logo">
+                                <p class="story-text">"Our custom AI chatbot handles 15,000+ conversations daily with human-like understanding. Support costs dropped by 65% while first-contact resolution rates increased to 85%."</p>
+                                <div class="story-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">65%</div>
+                                        <div class="stat-label">Cost Reduction</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">15K+</div>
+                                        <div class="stat-label">Daily Chats</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">85%</div>
+                                        <div class="stat-label">Resolution Rate</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="story-card">
+                                <img src="https://via.placeholder.com/200x60" alt="Client Logo" class="story-logo">
+                                <p class="story-text">"AI process automation agents optimized our supply chain, reducing inventory costs by 28% and improving delivery times by 45%. The system continuously learns and improves."</p>
+                                <div class="story-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">28%</div>
+                                        <div class="stat-label">Cost Savings</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">45%</div>
+                                        <div class="stat-label">Faster Delivery</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">100%</div>
+                                        <div class="stat-label">ROI in 6 Months</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">Explore some of our recent AI implementations across industries</p>
+            
+            <div class="projects-grid">
+                <!-- Featured Project - Resume Analyzer -->
+                <div class="project-card featured-project">
+                    <img src="https://via.placeholder.com/1200x600" alt="Resume Analyzer" class="project-image">
+                    <div class="project-overlay">
+                        <span class="project-category">AI Agents + NLP</span>
+                        <h3 class="project-title">Intelligent Resume Analyzer</h3>
+                        <p class="project-description">An advanced AI system that parses, analyzes, and scores resumes based on multiple criteria including skills, experience, and cultural fit. The system learns from hiring manager feedback to improve its recommendations over time.</p>
+                        <a href="#" class="btn btn-primary">View Case Study</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400" alt="Project Image" class="project-image">
+                    <div class="project-overlay">
+                        <span class="project-category">RAG</span>
+                        <h3 class="project-title">Legal Research Assistant</h3>
+                        <p class="project-description">A system that retrieves and synthesizes case law with proper citations for legal professionals.</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400" alt="Project Image" class="project-image">
+                    <div class="project-overlay">
+                        <span class="project-category">Chatbot</span>
+                        <h3 class="project-title">Healthcare Support Bot</h3>
+                        <p class="project-description">A HIPAA-compliant chatbot that handles patient inquiries 24/7 with medical accuracy.</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400" alt="Project Image" class="project-image">
+                    <div class="project-overlay">
+                        <span class="project-category">AI Integration</span>
+                        <h3 class="project-title">CRM Intelligence Layer</h3>
+                        <p class="project-description">Added AI capabilities to existing CRM for predictive lead scoring and analytics.</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400" alt="Project Image" class="project-image">
+                    <div class="project-overlay">
+                        <span class="project-category">Custom Solution</span>
+                        <h3 class="project-title">Manufacturing Optimization</h3>
+                        <p class="project-description">AI agents that monitor and optimize production line efficiency in real-time.</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400" alt="Project Image" class="project-image">
+                    <div class="project-overlay">
+                        <span class="project-category">AI Agents</span>
+                        <h3 class="project-title">Real Estate Matchmaker</h3>
+                        <p class="project-description">An agent that understands buyer preferences and matches properties autonomously.</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Client Testimonials</h2>
+            <p class="section-subtitle">What industry leaders say about our AI solutions</p>
+            
+            <div class="splide" id="testimonials-slider">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-quote">Working with Spartex AI was transformative for our business. Their autonomous agents didn't just automate tasks—they revolutionized our entire customer service operation. We're handling triple the volume with higher satisfaction scores and significantly reduced costs.</p>
+                                <div class="testimonial-author">
+                                    <img src="https://via.placeholder.com/100x100" alt="Client Photo" class="author-avatar">
+                                    <div class="author-info">
+                                        <div class="author-name">Sarah Johnson</div>
+                                        <div class="author-position">CEO, TechSolutions Inc.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-quote">The RAG solution Spartex AI implemented for our legal practice has been game-changing. Associates can now find relevant case law in minutes instead of hours, with proper citations and confidence scores. It's like giving our team superpowers.</p>
+                                <div class="testimonial-author">
+                                    <img src="https://via.placeholder.com/100x100" alt="Client Photo" class="author-avatar">
+                                    <div class="author-info">
+                                        <div class="author-name">Michael Chen</div>
+                                        <div class="author-position">Managing Partner, Law & Partners LLP</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-quote">We were skeptical about chatbots until we saw what Spartex AI built. Their solution handles 85% of our customer inquiries without human intervention—with higher resolution rates than our human agents. The conversational flow is so natural, customers often don't realize they're talking to AI.</p>
+                                <div class="testimonial-author">
+                                    <img src="https://via.placeholder.com/100x100" alt="Client Photo" class="author-avatar">
+                                    <div class="author-info">
+                                        <div class="author-name">David Martinez</div>
+                                        <div class="author-position">COO, ShopGlobal</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-quote">Spartex AI's integration services connected our legacy banking systems with modern AI capabilities without any downtime. The results were immediate and measurable—we saw a 40% increase in fraud detection accuracy and 30% faster loan approvals within the first month.</p>
+                                <div class="testimonial-author">
+                                    <img src="https://via.placeholder.com/100x100" alt="Client Photo" class="author-avatar">
+                                    <div class="author-info">
+                                        <div class="author-name">Emily Wilson</div>
+                                        <div class="author-position">CIO, FinancialGroup</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section" id="blog">
+        <div class="container">
+            <h2 class="section-title">AI Insights</h2>
+            <p class="section-subtitle">Latest research, trends, and case studies from our team</p>
+            
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/800x500" alt="Blog Image" class="blog-image">
+                    <div class="blog-content">
+                        <div class="blog-date"><i class="far fa-calendar-alt"></i> June 15, 2023 | AI Agents</div>
+                        <h3 class="blog-title">The Evolution of Autonomous Business Agents</h3>
+                        <p class="blog-excerpt">Exploring how AI agents are evolving from simple automation tools to sophisticated decision-makers that can handle complex, multi-step business processes with minimal human oversight.</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/800x500" alt="Blog Image" class="blog-image">
+                    <div class="blog-content">
+                        <div class="blog-date"><i class="far fa-calendar-alt"></i> May 28, 2023 | RAG</div>
+                        <h3 class="blog-title">Solving the Hallucination Problem in Enterprise AI</h3>
+                        <p class="blog-excerpt">How Retrieval-Augmented Generation is transforming enterprise knowledge management by providing accurate, verifiable information instead of plausible-sounding fabrications.</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/800x500" alt="Blog Image" class="blog-image">
+                    <div class="blog-content">
+                        <div class="blog-date"><i class="far fa-calendar-alt"></i> May 10, 2023 | Chatbots</div>
+                        <h3 class="blog-title">Beyond FAQ: The New Generation of Conversational AI</h3>
+                        <p class="blog-excerpt">Modern chatbots are evolving into sophisticated conversational agents that can handle complex workflows, process documents, and integrate with backend systems.</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/800x500" alt="Blog Image" class="blog-image">
+                    <div class="blog-content">
+                        <div class="blog-date"><i class="far fa-calendar-alt"></i> April 22, 2023 | Case Study</div>
+                        <h3 class="blog-title">Reducing Customer Service Costs by 60% with AI</h3>
+                        <p class="blog-excerpt">A detailed look at our implementation for a Fortune 500 retailer that transformed their support operations while improving customer satisfaction metrics.</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/800x500" alt="Blog Image" class="blog-image">
+                    <div class="blog-content">
+                        <div class="blog-date"><i class="far fa-calendar-alt"></i> April 5, 2023 | Technology</div>
+                        <h3 class="blog-title">Architecting Autonomous Agents for Scale</h3>
+                        <p class="blog-excerpt">Technical deep dive into how we design agentic AI systems that can reason, act, learn, and scale to handle enterprise workloads reliably.</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/800x500" alt="Blog Image" class="blog-image">
+                    <div class="blog-content">
+                        <div class="blog-date"><i class="far fa-calendar-alt"></i> March 18, 2023 | Industry Trends</div>
+                        <h3 class="blog-title">The State of Agentic AI in 2023</h3>
+                        <p class="blog-excerpt">Key developments and emerging patterns in autonomous AI systems across industries—what's working, what's not, and where the field is heading.</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo">Spartex<span>AI</span></a>
+                    <p class="footer-about">We build intelligent agentic AI solutions that transform businesses through automation, enhanced decision-making, and superior customer experiences. Our mission is to make advanced AI accessible and actionable for enterprises of all sizes.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Autonomous AI Agents</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> RAG Solutions</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Conversational AI</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> AI Integration</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> AI Strategy Consulting</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Custom AI Development</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Our Team</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Careers</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Success Stories</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Press</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 AI Avenue, Tech City, TX 75001, United States</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@spartexai.com</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Monday - Friday: 9AM - 6PM</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-globe"></i>
+                        <span>www.spartexai.com</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Spartex AI. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">GDPR Compliance</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-btn" id="theme-btn">
+            <i class="fas fa-palette"></i>
+        </button>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container" id="chatbot-container">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i> Spar - Your AI Assistant
+            </div>
+            <button class="chatbot-close" id="chatbot-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chatbot-body">
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="message bot-message">
+                    Hello! I'm Spar, your AI assistant from Spartex AI. How can I help you today?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input" placeholder="Type your message...">
+                <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" id="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <script>
+        // Initialize Lenis for smooth scrolling
+        const lenis = new Lenis({
+            lerp: 0.1,
+            smooth: true,
+            direction: 'vertical'
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('fa-times');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('fa-times');
+            });
+        });
+
+        // Theme switcher functionality
+        const themeBtn = document.getElementById('theme-btn');
+        let currentTheme = 'light';
+
+        themeBtn.addEventListener('click', function() {
+            if (currentTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                currentTheme = 'dark';
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                currentTheme = 'light';
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Chatbot functionality
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+
+        let chatbotOpen = false;
+
+        chatbotToggle.addEventListener('click', function() {
+            chatbotOpen = !chatbotOpen;
+            if (chatbotOpen) {
+                chatbotContainer.classList.add('active');
+            } else {
+                chatbotContainer.classList.remove('active');
+            }
+        });
+
+        chatbotClose.addEventListener('click', function() {
+            chatbotOpen = false;
+            chatbotContainer.classList.remove('active');
+        });
+
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot-message';
+            messageDiv.textContent = message;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.textContent = message;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        chatbotSend.addEventListener('click', function() {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                chatbotInput.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const responses = [
+                        "I'm an AI assistant here to help with information about Spartex AI services.",
+                        "Our autonomous agents can transform your business operations. Would you like more details?",
+                        "For immediate assistance, please contact us at info@spartexai.com",
+                        "I can provide information about our AI solutions, pricing, and case studies. What would you like to know?",
+                        "Thanks for your message! A human representative will follow up if needed."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addBotMessage(randomResponse);
+                }, 1000);
+            }
+        });
+
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                chatbotSend.click();
+            }
+        });
+
+        // Create particles for hero section
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 30 : 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize Splide sliders
+        document.addEventListener('DOMContentLoaded', function() {
+            // Success Stories Slider
+            new Splide('#success-stories-slider', {
+                type: 'loop',
+                perPage: 3,
+                perMove: 1,
+                gap: '30px',
+                pagination: true,
+                arrows: true,
+                breakpoints: {
+                    1200: {
+                        perPage: 2
+                    },
+                    768: {
+                        perPage: 1
+                    }
+                }
+            }).mount();
+
+            // Testimonials Slider
+            new Splide('#testimonials-slider', {
+                type: 'loop',
+                perPage: 2,
+                perMove: 1,
+                gap: '30px',
+                pagination: true,
+                arrows: true,
+                breakpoints: {
+                    992: {
+                        perPage: 1
+                    }
+                }
+            }).mount();
+
+            // Create particles
+            createParticles();
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero section animations
+        gsap.to('.hero-title', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out'
+        });
+
+        gsap.to('.hero-subtitle', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.3,
+            ease: 'power3.out'
+        });
+
+        gsap.to('.hero-buttons', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.6,
+            ease: 'power3.out'
+        });
+
+        gsap.to('.hero-image', {
+            opacity: 1,
+            duration: 1,
+            delay: 0.9,
+            ease: 'power3.out'
+        });
+
+        // Animate service cards on scroll
+        gsap.utils.toArray('.service-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Animate story cards on scroll
+        gsap.utils.toArray('.story-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Animate project cards on scroll
+        gsap.utils.toArray('.project-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Animate testimonial cards on scroll
+        gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Animate blog cards on scroll
+        gsap.utils.toArray('.blog-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Parallax effect for hero shapes
+        gsap.to('.shape-1', {
+            x: -50,
+            y: 50,
+            scrollTrigger: {
+                scrub: 1
+            }
+        });
+
+        gsap.to('.shape-2', {
+            x: 50,
+            y: -50,
+            scrollTrigger: {
+                scrub: 1
+            }
+        });
+
+        gsap.to('.shape-3', {
+            x: 30,
+            y: -30,
+            scrollTrigger: {
+                scrub: 1
+            }
+        });
+    </script>
+</body>
+</html>
